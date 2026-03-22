@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>月次レビューシート | 大野屋重機建設 SNS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ---------- Review Specific Styles ---------- */
+    .month-selector {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .month-selector select {
+      font-family: var(--font-ja);
+      font-size: 16px;
+      padding: 8px 16px;
+      border: 2px solid var(--color-accent);
+      border-radius: var(--radius);
+      background: var(--color-white);
+      color: var(--color-primary);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .month-selector .save-status {
+      font-size: 13px;
+      color: var(--color-success);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .month-selector .save-status.show {
+      opacity: 1;
+    }
+
+    /* KPI Input Table */
+    .review-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+    }
+    .review-table th,
+    .review-table td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 14px;
+    }
+    .review-table th {
+      background: var(--color-primary);
+      color: var(--color-white);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .review-table tr:nth-child(even) {
+      background: var(--color-bg);
+    }
+    .review-table input[type="number"] {
+      width: 90px;
+      padding: 6px 10px;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      font-family: var(--font-en);
+      font-size: 14px;
+      font-weight: 700;
+      text-align: right;
+      color: var(--color-primary);
+    }
+    .review-table input[type="number"]:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 2px rgba(58,139,178,0.2);
+    }
+    .target-val {
+      font-family: var(--font-en);
+      font-size: 13px;
+      color: var(--color-text-light);
+    }
+    .achievement {
+      font-family: var(--font-en);
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .achievement.over { color: var(--color-success); }
+    .achievement.near { color: var(--color-warning); }
+    .achievement.under { color: #e74c3c; }
+    .achievement.none { color: var(--color-text-light); }
+
+    /* Progress Bar */
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--color-border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+    .fill.over { background: var(--color-success); }
+    .fill.near { background: var(--color-warning); }
+    .fill.under { background: #e74c3c; }
+
+    /* Post Performance */
+    .post-row {
+      display: grid;
+      grid-template-columns: 50px 1fr 80px 80px 80px 80px;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 14px;
+    }
+    .post-row.header {
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--color-primary);
+      border-bottom: 2px solid var(--color-primary);
+      padding-bottom: 8px;
+    }
+    .post-row input[type="number"] {
+      width: 100%;
+      padding: 5px 8px;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      font-family: var(--font-en);
+      font-size: 13px;
+      text-align: right;
+    }
+    .post-row input[type="number"]:focus {
+      outline: none;
+      border-color: var(--color-accent);
+    }
+    .post-row input[type="text"] {
+      width: 100%;
+      padding: 5px 8px;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .post-row input[type="text"]:focus {
+      outline: none;
+      border-color: var(--color-accent);
+    }
+    .week-header {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--color-primary);
+      padding: 16px 0 8px;
+      border-bottom: 2px solid var(--color-accent-light);
+      margin-top: 8px;
+    }
+
+    /* Category Summary */
+    .cat-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .cat-summary-item {
+      background: var(--color-white);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+      border: 1px solid var(--color-border);
+    }
+    .cat-summary-item .cat-avg {
+      font-family: var(--font-en);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin: 8px 0 4px;
+    }
+    .cat-summary-item .cat-label {
+      font-size: 12px;
+      color: var(--color-text-light);
+    }
+
+    /* Textarea */
+    .review-textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      font-family: var(--font-ja);
+      font-size: 14px;
+      line-height: 1.8;
+      resize: vertical;
+      color: var(--color-text);
+    }
+    .review-textarea:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 2px rgba(58,139,178,0.2);
+    }
+    .review-textarea::placeholder {
+      color: #bbb;
+    }
+
+    /* Action Buttons */
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 24px;
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-ja);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-white);
+    }
+    .btn-primary:hover { background: var(--color-primary-light); }
+    .btn-danger {
+      background: #e74c3c;
+      color: var(--color-white);
+    }
+    .btn-danger:hover { background: #c0392b; }
+    .btn-outline {
+      background: transparent;
+      color: var(--color-primary);
+      border: 2px solid var(--color-primary);
+    }
+    .btn-outline:hover { background: var(--color-primary); color: var(--color-white); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .post-row {
+        grid-template-columns: 40px 1fr 60px 60px;
+        font-size: 13px;
+      }
+      .post-row .hide-sp { display: none; }
+      .review-table input[type="number"] { width: 70px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== Header ========== -->
+  <div class="cover" style="min-height:auto; padding:40px 24px;">
+    <div class="cover-logo">MONTHLY REVIEW</div>
+    <h1 class="cover-title">月次レビューシート</h1>
+    <p class="cover-subtitle">KPI達成率 &amp; 投稿パフォーマンス分析</p>
+    <div class="cover-divider"></div>
+    <p style="color:rgba(255,255,255,0.5); font-size:13px;">
+      <a href="index.html" style="color:var(--color-accent-light);">&larr; 戦略ドキュメントに戻る</a>
+    </p>
+  </div>
+
+  <div class="container">
+
+    <!-- ========== 月選択 ========== -->
+    <section class="section">
+      <div class="month-selector">
+        <select id="monthSelect">
+          <option value="2026-03">2026年 3月</option>
+          <option value="2026-04">2026年 4月</option>
+          <option value="2026-05">2026年 5月</option>
+          <option value="2026-06">2026年 6月</option>
+          <option value="2026-07">2026年 7月</option>
+          <option value="2026-08">2026年 8月</option>
+          <option value="2026-09">2026年 9月</option>
+        </select>
+        <span class="save-status" id="saveStatus">保存しました</span>
+      </div>
+    </section>
+
+    <!-- ========== 1. KPI実績 ========== -->
+    <section class="section">
+      <h2 class="section-title"><span class="num">1</span>KPI実績</h2>
+      <p class="section-lead">実績を入力すると、目標に対する達成率が自動計算されます。</p>
+
+      <table class="review-table">
+        <thead>
+          <tr>
+            <th>指標</th>
+            <th>目標</th>
+            <th>実績</th>
+            <th>達成率</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>IGフォロワー数</td>
+            <td class="target-val" id="target-ig-followers">-</td>
+            <td><input type="number" id="kpi-ig-followers" min="0" placeholder="0"></td>
+            <td>
+              <span class="achievement none" id="rate-ig-followers">-</span>
+              <div class="progress-bar"><div class="fill" id="bar-ig-followers"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td>TikTokフォロワー数</td>
+            <td class="target-val" id="target-tt-followers">-</td>
+            <td><input type="number" id="kpi-tt-followers" min="0" placeholder="0"></td>
+            <td>
+              <span class="achievement none" id="rate-tt-followers">-</span>
+              <div class="progress-bar"><div class="fill" id="bar-tt-followers"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td>TikTok平均再生数</td>
+            <td class="target-val" id="target-tt-views">-</td>
+            <td><input type="number" id="kpi-tt-views" min="0" placeholder="0"></td>
+            <td>
+              <span class="achievement none" id="rate-tt-views">-</span>
+              <div class="progress-bar"><div class="fill" id="bar-tt-views"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td>IG平均いいね数</td>
+            <td class="target-val" id="target-ig-likes">-</td>
+            <td><input type="number" id="kpi-ig-likes" min="0" placeholder="0"></td>
+            <td>
+              <span class="achievement none" id="rate-ig-likes">-</span>
+              <div class="progress-bar"><div class="fill" id="bar-ig-likes"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td>DMでの問い合わせ数</td>
+            <td class="target-val" id="target-dm">-</td>
+            <td><input type="number" id="kpi-dm" min="0" placeholder="0"></td>
+            <td>
+              <span class="achievement none" id="rate-dm">-</span>
+              <div class="progress-bar"><div class="fill" id="bar-dm"></div></div>
+            </td>
+          </tr>
+          <tr>
+            <td>投稿数（IG+TT合計）</td>
+            <td class="target-val">28</td>
+            <td><input type="number" id="kpi-posts" min="0" placeholder="0"></td>
+            <td>
+              <span class="achievement none" id="rate-posts">-</span>
+              <div class="progress-bar"><div class="fill" id="bar-posts"></div></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ========== 2. 投稿パフォーマンス ========== -->
+    <section class="section">
+      <h2 class="section-title"><span class="num">2</span>投稿パフォーマンス</h2>
+      <p class="section-lead">各投稿の反応を記録して、どんな投稿がウケるか分析します。</p>
+
+      <div id="postPerformance"></div>
+
+      <div class="action-bar" style="margin-top: 12px;">
+        <button class="btn btn-outline" onclick="addPostRow()">+ 投稿を追加</button>
+      </div>
+    </section>
+
+    <!-- ========== 3. カテゴリ別平均 ========== -->
+    <section class="section">
+      <h2 class="section-title"><span class="num">3</span>カテゴリ別パフォーマンス</h2>
+      <p class="section-lead">カテゴリごとの平均いいね数（自動集計）。どのテーマが響くか把握できます。</p>
+
+      <div class="cat-summary-grid" id="catSummary">
+        <!-- JS で自動生成 -->
+      </div>
+    </section>
+
+    <!-- ========== 4. ベスト投稿 ========== -->
+    <section class="section">
+      <h2 class="section-title"><span class="num">4</span>今月のベスト投稿</h2>
+      <p class="section-lead">最も反応が良かった投稿を振り返ります。</p>
+
+      <div class="card">
+        <h3 class="card-title">IG ベスト投稿</h3>
+        <div id="bestIG" style="font-size:14px; color:var(--color-text-light); padding:8px 0;">データを入力すると自動表示されます</div>
+      </div>
+      <div class="card">
+        <h3 class="card-title">TikTok ベスト投稿</h3>
+        <div id="bestTT" style="font-size:14px; color:var(--color-text-light); padding:8px 0;">データを入力すると自動表示されます</div>
+      </div>
+    </section>
+
+    <!-- ========== 5. 振り返りメモ ========== -->
+    <section class="section">
+      <h2 class="section-title"><span class="num">5</span>振り返り &amp; 改善メモ</h2>
+
+      <div class="card">
+        <h3 class="card-title">うまくいったこと</h3>
+        <textarea class="review-textarea" id="memo-good" placeholder="例: MACHINE系の投稿がフォロワー以外にもリーチした&#10;例: 夕日バックのクレーン写真が過去最高いいね"></textarea>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">改善したいこと</h3>
+        <textarea class="review-textarea" id="memo-improve" placeholder="例: TIPS系の投稿のエンゲージメントが低い → もっと短くまとめる&#10;例: 動画のテロップが小さくて読みにくいというコメントがあった"></textarea>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">来月やること</h3>
+        <textarea class="review-textarea" id="memo-next" placeholder="例: バズった「クレーン旋回」系の動画をもう1本作る&#10;例: 社員紹介を月2回に増やす&#10;例: ストーリーズも週3回投稿する"></textarea>
+      </div>
+    </section>
+
+    <!-- ========== 操作ボタン ========== -->
+    <section class="section">
+      <div class="action-bar">
+        <button class="btn btn-primary" onclick="saveData()">保存する</button>
+        <button class="btn btn-outline" onclick="exportCSV()">CSVエクスポート</button>
+        <button class="btn btn-danger" onclick="clearData()">この月のデータを削除</button>
+      </div>
+    </section>
+
+    <!-- ========== Navigation ========== -->
+    <div class="back-to-top">
+      <a href="#" style="margin-right:20px;">ページトップに戻る</a>
+      <a href="index.html">&larr; 戦略ドキュメントに戻る</a>
+      <a href="weekly-plan.html" style="margin-left:20px;">第1週 投稿計画 &rarr;</a>
+    </div>
+
+  </div>
+
+  <!-- ========== Footer ========== -->
+  <footer class="doc-footer">
+    大野屋重機建設 SNS採用戦略 | 月次レビューシート
+  </footer>
+
+  <!-- ========== JavaScript ========== -->
+  <script>
+  // --- KPI目標データ（月ごと） ---
+  const TARGETS = {
+    '2026-03': { igFollowers: 100, ttFollowers: 200, ttViews: 500, igLikes: 15,  dm: 0,  posts: 28 },
+    '2026-04': { igFollowers: 100, ttFollowers: 200, ttViews: 500, igLikes: 15,  dm: 0,  posts: 28 },
+    '2026-05': { igFollowers: 300, ttFollowers: 500, ttViews: 1000, igLikes: 30, dm: 1,  posts: 28 },
+    '2026-06': { igFollowers: 500, ttFollowers: 1000, ttViews: 2000, igLikes: 50, dm: 1, posts: 28 },
+    '2026-07': { igFollowers: 700, ttFollowers: 1500, ttViews: 3000, igLikes: 70, dm: 2, posts: 28 },
+    '2026-08': { igFollowers: 850, ttFollowers: 2000, ttViews: 4000, igLikes: 85, dm: 2, posts: 28 },
+    '2026-09': { igFollowers: 1000, ttFollowers: 3000, ttViews: 5000, igLikes: 100, dm: 3, posts: 28 },
+  };
+
+  const CATEGORIES = ['MACHINE','WORK','PEOPLE','LOCAL','TIPS','B/A','DAILY'];
+  const CAT_CLASSES = {
+    'MACHINE': 'badge-machine', 'WORK': 'badge-work', 'PEOPLE': 'badge-people',
+    'LOCAL': 'badge-local', 'TIPS': 'badge-tips', 'B/A': 'badge-ba', 'DAILY': 'badge-daily'
+  };
+
+  const KPI_FIELDS = [
+    { id: 'ig-followers', key: 'igFollowers' },
+    { id: 'tt-followers', key: 'ttFollowers' },
+    { id: 'tt-views',     key: 'ttViews' },
+    { id: 'ig-likes',     key: 'igLikes' },
+    { id: 'dm',           key: 'dm' },
+    { id: 'posts',        key: 'posts' },
+  ];
+
+  let postRows = [];
+  let currentMonth = '2026-03';
+
+  // --- 初期化 ---
+  function init() {
+    currentMonth = document.getElementById('monthSelect').value;
+    updateTargets();
+    loadData();
+    renderPostRows();
+    calcAll();
+  }
+
+  document.getElementById('monthSelect').addEventListener('change', function() {
+    saveData();
+    init();
+  });
+
+  // --- 目標表示を更新 ---
+  function updateTargets() {
+    const t = TARGETS[currentMonth] || {};
+    document.getElementById('target-ig-followers').textContent = t.igFollowers || '-';
+    document.getElementById('target-tt-followers').textContent = t.ttFollowers || '-';
+    document.getElementById('target-tt-views').textContent = t.ttViews || '-';
+    document.getElementById('target-ig-likes').textContent = t.igLikes || '-';
+    document.getElementById('target-dm').textContent = t.dm > 0 ? t.dm : '-';
+  }
+
+  // --- 達成率計算 ---
+  function calcRate(actual, target) {
+    if (!target || target === 0) return null;
+    return Math.round((actual / target) * 100);
+  }
+
+  function rateClass(rate) {
+    if (rate === null) return 'none';
+    if (rate >= 100) return 'over';
+    if (rate >= 70) return 'near';
+    return 'under';
+  }
+
+  function calcAll() {
+    const t = TARGETS[currentMonth] || {};
+
+    KPI_FIELDS.forEach(f => {
+      const input = document.getElementById('kpi-' + f.id);
+      const val = parseInt(input.value) || 0;
+      const target = f.key === 'posts' ? 28 : (t[f.key] || 0);
+      const rate = target > 0 ? calcRate(val, target) : null;
+      const cls = rateClass(rate);
+
+      const rateEl = document.getElementById('rate-' + f.id);
+      rateEl.textContent = rate !== null ? rate + '%' : '-';
+      rateEl.className = 'achievement ' + cls;
+
+      const barEl = document.getElementById('bar-' + f.id);
+      barEl.style.width = rate !== null ? Math.min(rate, 100) + '%' : '0%';
+      barEl.className = 'fill ' + cls;
+    });
+
+    calcCategorySummary();
+    calcBestPosts();
+  }
+
+  // --- KPI入力イベント ---
+  KPI_FIELDS.forEach(f => {
+    document.getElementById('kpi-' + f.id).addEventListener('input', function() {
+      calcAll();
+      autoSave();
+    });
+  });
+
+  // --- 投稿パフォーマンス行 ---
+  function renderPostRows() {
+    const container = document.getElementById('postPerformance');
+    container.innerHTML = '';
+
+    // ヘッダー
+    const header = document.createElement('div');
+    header.className = 'post-row header';
+    header.innerHTML = '<div>日</div><div>内容</div><div>カテゴリ</div><div>いいね</div><div class="hide-sp">再生数</div><div class="hide-sp">保存</div>';
+    container.appendChild(header);
+
+    if (postRows.length === 0) {
+      // デフォルト: 4週分の空行を生成
+      for (let w = 1; w <= 4; w++) {
+        for (let d = 0; d < 7; d++) {
+          postRows.push({ day: '', content: '', category: '', likes: '', views: '', saves: '' });
+        }
+      }
+    }
+
+    let weekNum = 0;
+    postRows.forEach((row, i) => {
+      // 週区切り
+      if (i % 7 === 0) {
+        weekNum++;
+        const weekH = document.createElement('div');
+        weekH.className = 'week-header';
+        weekH.textContent = '第' + weekNum + '週';
+        container.appendChild(weekH);
+      }
+
+      const el = document.createElement('div');
+      el.className = 'post-row';
+      el.innerHTML =
+        '<div><input type="text" value="' + esc(row.day) + '" data-i="' + i + '" data-f="day" style="width:40px;text-align:center;" placeholder="' + (i % 7 + 1) + '"></div>' +
+        '<div><input type="text" value="' + esc(row.content) + '" data-i="' + i + '" data-f="content" placeholder="投稿内容"></div>' +
+        '<div><select data-i="' + i + '" data-f="category" style="font-size:12px;padding:4px;border:1px solid #e0e0e0;border-radius:4px;width:100%;">' +
+          '<option value="">-</option>' +
+          CATEGORIES.map(c => '<option value="' + c + '"' + (row.category === c ? ' selected' : '') + '>' + c + '</option>').join('') +
+        '</select></div>' +
+        '<div><input type="number" value="' + esc(row.likes) + '" data-i="' + i + '" data-f="likes" min="0" placeholder="0"></div>' +
+        '<div class="hide-sp"><input type="number" value="' + esc(row.views) + '" data-i="' + i + '" data-f="views" min="0" placeholder="0"></div>' +
+        '<div class="hide-sp"><input type="number" value="' + esc(row.saves) + '" data-i="' + i + '" data-f="saves" min="0" placeholder="0"></div>';
+      container.appendChild(el);
+    });
+
+    // イベント登録
+    container.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', function() {
+        const i = parseInt(this.dataset.i);
+        const f = this.dataset.f;
+        if (i >= 0 && f) {
+          postRows[i][f] = this.value;
+          calcAll();
+          autoSave();
+        }
+      });
+    });
+  }
+
+  function addPostRow() {
+    for (let d = 0; d < 7; d++) {
+      postRows.push({ day: '', content: '', category: '', likes: '', views: '', saves: '' });
+    }
+    renderPostRows();
+  }
+
+  // --- カテゴリ別集計 ---
+  function calcCategorySummary() {
+    const sums = {};
+    const counts = {};
+    CATEGORIES.forEach(c => { sums[c] = 0; counts[c] = 0; });
+
+    postRows.forEach(row => {
+      if (row.category && row.likes) {
+        const likes = parseInt(row.likes) || 0;
+        if (likes > 0) {
+          sums[row.category] = (sums[row.category] || 0) + likes;
+          counts[row.category] = (counts[row.category] || 0) + 1;
+        }
+      }
+    });
+
+    const container = document.getElementById('catSummary');
+    container.innerHTML = CATEGORIES.map(c => {
+      const avg = counts[c] > 0 ? Math.round(sums[c] / counts[c]) : '-';
+      const countLabel = counts[c] > 0 ? counts[c] + '件' : '0件';
+      return '<div class="cat-summary-item">' +
+        '<span class="badge ' + (CAT_CLASSES[c] || '') + '">' + c + '</span>' +
+        '<div class="cat-avg">' + avg + '</div>' +
+        '<div class="cat-label">平均いいね / ' + countLabel + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // --- ベスト投稿 ---
+  function calcBestPosts() {
+    let bestIG = { likes: 0, content: '', day: '' };
+    let bestTT = { views: 0, content: '', day: '' };
+
+    postRows.forEach(row => {
+      const likes = parseInt(row.likes) || 0;
+      const views = parseInt(row.views) || 0;
+      if (likes > bestIG.likes) {
+        bestIG = { likes, content: row.content, day: row.day };
+      }
+      if (views > bestTT.views) {
+        bestTT = { views, content: row.content, day: row.day };
+      }
+    });
+
+    const igEl = document.getElementById('bestIG');
+    if (bestIG.likes > 0) {
+      igEl.innerHTML = '<strong style="color:var(--color-primary);">' + esc(bestIG.content) + '</strong>' +
+        (bestIG.day ? ' (' + esc(bestIG.day) + ')' : '') +
+        ' &mdash; <span style="color:var(--color-accent);font-family:var(--font-en);font-weight:700;">' + bestIG.likes + ' いいね</span>';
+    } else {
+      igEl.textContent = 'データを入力すると自動表示されます';
+    }
+
+    const ttEl = document.getElementById('bestTT');
+    if (bestTT.views > 0) {
+      ttEl.innerHTML = '<strong style="color:var(--color-primary);">' + esc(bestTT.content) + '</strong>' +
+        (bestTT.day ? ' (' + esc(bestTT.day) + ')' : '') +
+        ' &mdash; <span style="color:var(--color-accent);font-family:var(--font-en);font-weight:700;">' + bestTT.views + ' 再生</span>';
+    } else {
+      ttEl.textContent = 'データを入力すると自動表示されます';
+    }
+  }
+
+  // --- 保存 / 読込 ---
+  function getStorageKey() {
+    return 'ohnoya-sns-review-' + currentMonth;
+  }
+
+  function saveData() {
+    const data = {
+      kpi: {},
+      posts: postRows,
+      memos: {
+        good: document.getElementById('memo-good').value,
+        improve: document.getElementById('memo-improve').value,
+        next: document.getElementById('memo-next').value,
+      }
+    };
+    KPI_FIELDS.forEach(f => {
+      data.kpi[f.id] = document.getElementById('kpi-' + f.id).value;
+    });
+    localStorage.setItem(getStorageKey(), JSON.stringify(data));
+    showSaveStatus();
+  }
+
+  function loadData() {
+    const raw = localStorage.getItem(getStorageKey());
+    if (!raw) {
+      postRows = [];
+      KPI_FIELDS.forEach(f => {
+        document.getElementById('kpi-' + f.id).value = '';
+      });
+      document.getElementById('memo-good').value = '';
+      document.getElementById('memo-improve').value = '';
+      document.getElementById('memo-next').value = '';
+      return;
+    }
+    const data = JSON.parse(raw);
+    KPI_FIELDS.forEach(f => {
+      document.getElementById('kpi-' + f.id).value = data.kpi[f.id] || '';
+    });
+    postRows = data.posts || [];
+    document.getElementById('memo-good').value = (data.memos && data.memos.good) || '';
+    document.getElementById('memo-improve').value = (data.memos && data.memos.improve) || '';
+    document.getElementById('memo-next').value = (data.memos && data.memos.next) || '';
+  }
+
+  function clearData() {
+    if (!confirm('この月のデータをすべて削除しますか？')) return;
+    localStorage.removeItem(getStorageKey());
+    postRows = [];
+    init();
+  }
+
+  let saveTimer = null;
+  function autoSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => saveData(), 500);
+  }
+
+  function showSaveStatus() {
+    const el = document.getElementById('saveStatus');
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2000);
+  }
+
+  // テキストエリア自動保存
+  ['memo-good', 'memo-improve', 'memo-next'].forEach(id => {
+    document.getElementById(id).addEventListener('input', autoSave);
+  });
+
+  // --- CSVエクスポート ---
+  function exportCSV() {
+    let csv = '\uFEFF'; // BOM for Excel
+    csv += '月,指標,目標,実績,達成率\n';
+    const t = TARGETS[currentMonth] || {};
+    KPI_FIELDS.forEach(f => {
+      const val = parseInt(document.getElementById('kpi-' + f.id).value) || 0;
+      const target = f.key === 'posts' ? 28 : (t[f.key] || 0);
+      const rate = target > 0 ? calcRate(val, target) + '%' : '-';
+      const label = document.getElementById('kpi-' + f.id).closest('tr').querySelector('td').textContent;
+      csv += currentMonth + ',' + label + ',' + target + ',' + val + ',' + rate + '\n';
+    });
+
+    csv += '\n日,内容,カテゴリ,いいね,再生数,保存\n';
+    postRows.forEach(row => {
+      csv += [row.day, '"' + (row.content || '') + '"', row.category, row.likes, row.views, row.saves].join(',') + '\n';
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'sns-review-' + currentMonth + '.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // --- ユーティリティ ---
+  function esc(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // --- 起動 ---
+  init();
+  </script>
+
+</body>
+</html>
