@@ -6,6 +6,126 @@
   <title>第1週 投稿計画表（3/23〜3/29）| 大野屋重機建設 SNS</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* ---------- Buzz Verification ---------- */
+    .buzz-card {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2a5a8c 100%);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin-bottom: 32px;
+      color: var(--color-white);
+      position: relative;
+      overflow: hidden;
+    }
+    .buzz-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 180px; height: 180px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+    .buzz-label {
+      font-family: var(--font-en);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--color-accent-light);
+      margin-bottom: 8px;
+    }
+    .buzz-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .buzz-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .buzz-metric {
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 14px 16px;
+      text-align: center;
+    }
+    .buzz-metric .val {
+      font-family: var(--font-en);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--color-accent-light);
+      line-height: 1;
+    }
+    .buzz-metric .lbl {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 4px;
+    }
+    .buzz-factors {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .buzz-factors h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-accent-light);
+      margin-bottom: 8px;
+    }
+    .buzz-factors ul {
+      list-style: none;
+      padding: 0;
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.9;
+    }
+    .buzz-factors ul li::before {
+      content: '→ ';
+      color: var(--color-accent-light);
+    }
+    @media (max-width: 600px) {
+      .buzz-factors { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Reel Caption ---------- */
+    .reel-caption-section {
+      margin-top: 16px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(58,139,178,0.08) 0%, rgba(58,139,178,0.03) 100%);
+      border: 1.5px solid rgba(58,139,178,0.3);
+      border-radius: 8px;
+    }
+    .reel-label {
+      font-family: var(--font-en);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--color-accent);
+      margin-bottom: 8px;
+    }
+    .reel-hook {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 4px;
+    }
+    .reel-tip {
+      font-size: 12px;
+      color: var(--color-text-light);
+      margin-bottom: 10px;
+    }
+    .reel-caption-box {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 14px 48px 14px 14px;
+      font-size: 13px;
+      line-height: 1.9;
+      white-space: pre-wrap;
+      position: relative;
+    }
+  </style>
 </head>
 <body>
 
@@ -21,6 +141,54 @@
   </div>
 
   <div class="container">
+
+    <!-- ========== バズ検証（3/23） ========== -->
+    <div class="buzz-card">
+      <div class="buzz-label">BUZZ VERIFICATION — 3/23 MACHINE</div>
+      <div class="buzz-title">初投稿バズ検証：GR-1000N 動画が 1,500 回再生を達成</div>
+
+      <div class="buzz-metrics">
+        <div class="buzz-metric">
+          <div class="val">1,500</div>
+          <div class="lbl">TikTok 再生数</div>
+        </div>
+        <div class="buzz-metric">
+          <div class="val">3×</div>
+          <div class="lbl">1ヶ月KPI比</div>
+        </div>
+        <div class="buzz-metric">
+          <div class="val">MACHINE</div>
+          <div class="lbl">有効カテゴリ</div>
+        </div>
+        <div class="buzz-metric">
+          <div class="val">DAY 1</div>
+          <div class="lbl">投稿日目</div>
+        </div>
+      </div>
+
+      <div class="buzz-factors">
+        <div>
+          <h4>成功要因（仮説）</h4>
+          <ul>
+            <li>数字の強さ「最大100トン」</li>
+            <li>冒頭テロップが明確「新潟のクレーン会社」</li>
+            <li>初投稿アルゴリズムブースト</li>
+            <li>MACHINEカテゴリの訴求力が高い</li>
+            <li>低アングルの迫力ある映像</li>
+          </ul>
+        </div>
+        <div>
+          <h4>今週への活かし方</h4>
+          <ul>
+            <li>MACHINEを週2回以上維持</li>
+            <li>数字を使ったテロップを毎回入れる</li>
+            <li>3/24はフォロワー増加の勢いを繋ぐ</li>
+            <li>リール冒頭2秒のフックを強化</li>
+            <li>TikTokと同内容をIGリールにも即日投稿</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
     <!-- ========== 週間サマリー ========== -->
     <section class="section">
@@ -184,6 +352,19 @@ DMお待ちしています！</div>
           <div class="hashtag-box">
             <button class="copy-btn" onclick="copyCaption(this)">コピー</button>
 #大野屋重機建設 #クレーンの大野屋 #十日町 #新潟 #LIFTYOURFUTURE #建設業 #現場仕事 #揚重作業 #クレーン作業 #建設現場 #クレーンオペレーター #採用 #建設業求人 #新潟求人</div>
+
+          <div class="reel-caption-section">
+            <div class="reel-label">IG REEL CAPTION — バズ翌日フォロー投稿</div>
+            <div class="reel-hook">冒頭1行（「もっと見る」前に表示される部分）が勝負</div>
+            <div class="reel-tip">昨日1,500再生の勢いを今日に繋ぐ。新規フォロワーへの「はじめまして」を意識。</div>
+            <div class="reel-caption-box">
+              <button class="copy-btn" onclick="copyCaption(this)">コピー</button>昨日の動画を見てくれた方、ありがとうございます。
+
+今日は現場の揚重作業をお届け。
+鉄骨が空中を移動する瞬間、ここにミリ単位の技術があります。
+
+フォローするとこういう映像が毎日届きます。</div>
+          </div>
         </div>
 
         <!-- TikTok -->
@@ -250,6 +431,19 @@ DMお待ちしています！</div>
           <div class="hashtag-box">
             <button class="copy-btn" onclick="copyCaption(this)">コピー</button>
 #大野屋重機建設 #クレーンの大野屋 #十日町 #新潟 #LIFTYOURFUTURE #十日町市 #新潟県 #雪国 #地方で働く #Uターン #新潟暮らし #春 #採用 #新潟求人</div>
+
+          <div class="reel-caption-section">
+            <div class="reel-label">IG REEL CAPTION — LOCAL / Uターン訴求</div>
+            <div class="reel-hook">都会生活に疲れた人に刺さる冒頭1行を</div>
+            <div class="reel-tip">「地方に帰りたい」という潜在層に届ける。景色の美しさで感情を動かす。</div>
+            <div class="reel-caption-box">
+              <button class="copy-btn" onclick="copyCaption(this)">コピー</button>十日町で働く、という選択肢。
+
+豪雪地帯の冬を越えると、この景色がたまらなく嬉しい。
+都会にはない、空の広さがここにある。
+
+Uターン・移住に興味がある方、お気軽にDMください。</div>
+          </div>
         </div>
 
         <!-- TikTok -->
@@ -317,6 +511,19 @@ DMお待ちしています！</div>
           <div class="hashtag-box">
             <button class="copy-btn" onclick="copyCaption(this)">コピー</button>
 #大野屋重機建設 #クレーンの大野屋 #十日町 #新潟 #LIFTYOURFUTURE #高所作業車 #建設機械 #重機 #メンテナンス #建設業 #採用 #建設業求人 #新潟求人</div>
+
+          <div class="reel-caption-section">
+            <div class="reel-label">IG REEL CAPTION — MACHINE / 高所作業車</div>
+            <div class="reel-hook">「クレーンだけじゃない」という意外性で続きを読ませる</div>
+            <div class="reel-tip">数字（高さ）を入れると視聴者が反応しやすい。保存CTAで保存数を稼ぐ。</div>
+            <div class="reel-caption-box">
+              <button class="copy-btn" onclick="copyCaption(this)">コピー</button>クレーンだけじゃないんです。
+
+高所作業車、最高到達高さ約25m。
+外壁点検・看板設置・樹木伐採まで、高いところは全部お任せ。
+
+気になったら保存しておいてください。</div>
+          </div>
         </div>
 
         <!-- TikTok -->
@@ -387,6 +594,20 @@ Q. 休みの日は何してる？
           <div class="hashtag-box">
             <button class="copy-btn" onclick="copyCaption(this)">コピー</button>
 #大野屋重機建設 #クレーンの大野屋 #十日町 #新潟 #LIFTYOURFUTURE #クレーンオペレーター #建設業界 #社員紹介 #チームワーク #採用 #求人 #建設業求人 #クレーンオペレーター募集</div>
+
+          <div class="reel-caption-section">
+            <div class="reel-label">IG REEL CAPTION — PEOPLE / 社員紹介</div>
+            <div class="reel-hook">「この人どんな人？」と続きを読ませる問いかけ形式</div>
+            <div class="reel-tip">採用直結コンテンツ。DMへの導線を自然に入れる。</div>
+            <div class="reel-caption-box">
+              <button class="copy-btn" onclick="copyCaption(this)">コピー</button>大野屋重機建設で働く人を紹介します。
+
+クレーンオペレーター○年目。
+「機械と向き合う時間が好きなんです」
+
+一緒に働く仲間を募集中。
+気になったらDMお待ちしています。</div>
+          </div>
         </div>
 
         <!-- TikTok -->
@@ -460,6 +681,23 @@ Q. 休みの日は何してる？
           <div class="hashtag-box">
             <button class="copy-btn" onclick="copyCaption(this)">コピー</button>
 #大野屋重機建設 #クレーンの大野屋 #十日町 #新潟 #LIFTYOURFUTURE #ラフテレーンクレーン #クレーン #移動式クレーン #建設機械 #クレーン免許 #資格 #建設業界の仕事 #豆知識 #採用 #建設業求人</div>
+
+          <div class="reel-caption-section">
+            <div class="reel-label">IG REEL CAPTION — TIPS / ラフテレーン解説</div>
+            <div class="reel-hook">「知ってる人は建設通」で知識欲を刺激する</div>
+            <div class="reel-tip">保存されやすいコンテンツ。「保存して」と直接伝えるのが効果的。</div>
+            <div class="reel-caption-box">
+              <button class="copy-btn" onclick="copyCaption(this)">コピー</button>ラフテレーンクレーン、知ってますか？
+
+・公道を自走できる
+・トレーラー不要
+・不整地でも作業OK
+・最大100トン吊れる
+
+「ラフター」と呼ばれるこの1台で、現場のほとんどをカバーできます。
+
+詳しくはIGリールで解説中。保存しておくと後で見返せます。</div>
+          </div>
         </div>
 
         <!-- TikTok -->
@@ -530,6 +768,20 @@ Q. 休みの日は何してる？
           <div class="hashtag-box">
             <button class="copy-btn" onclick="copyCaption(this)">コピー</button>
 #大野屋重機建設 #クレーンの大野屋 #十日町 #新潟 #LIFTYOURFUTURE #車両整備 #メンテナンス #安全第一 #建設業 #日曜日 #採用 #建設業求人 #新潟求人</div>
+
+          <div class="reel-caption-section">
+            <div class="reel-label">IG REEL CAPTION — DAILY / 週末整備</div>
+            <div class="reel-hook">日曜のゆるい雰囲気で「この会社いいな」感を出す</div>
+            <div class="reel-tip">週のまとめとして来週への期待感を作る。フォロワーとの距離を縮める投稿。</div>
+            <div class="reel-caption-box">
+              <button class="copy-btn" onclick="copyCaption(this)">コピー</button>日曜日の大野屋重機建設です。
+
+来週の現場に備えて、車両を丁寧に整備中。
+安全は日々のメンテナンスから生まれます。
+
+今週もフォロー・いいねありがとうございました。
+来週もよろしくお願いします。</div>
+          </div>
         </div>
 
         <!-- TikTok -->
