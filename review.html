@@ -324,6 +324,15 @@
             </td>
           </tr>
           <tr>
+            <td>IGリール平均再生数</td>
+            <td class="target-val" id="target-ig-reel-views">-</td>
+            <td><input type="number" id="kpi-ig-reel-views" min="0" placeholder="0"></td>
+            <td>
+              <span class="achievement none" id="rate-ig-reel-views">-</span>
+              <div class="progress-bar"><div class="fill" id="bar-ig-reel-views"></div></div>
+            </td>
+          </tr>
+          <tr>
             <td>IG平均いいね数</td>
             <td class="target-val" id="target-ig-likes">-</td>
             <td><input type="number" id="kpi-ig-likes" min="0" placeholder="0"></td>
@@ -438,13 +447,13 @@
   <script>
   // --- KPI目標データ（月ごと） ---
   const TARGETS = {
-    '2026-03': { igFollowers: 100, ttFollowers: 200, ttViews: 500, igLikes: 15,  dm: 0,  posts: 28 },
-    '2026-04': { igFollowers: 100, ttFollowers: 200, ttViews: 500, igLikes: 15,  dm: 0,  posts: 28 },
-    '2026-05': { igFollowers: 300, ttFollowers: 500, ttViews: 1000, igLikes: 30, dm: 1,  posts: 28 },
-    '2026-06': { igFollowers: 500, ttFollowers: 1000, ttViews: 2000, igLikes: 50, dm: 1, posts: 28 },
-    '2026-07': { igFollowers: 700, ttFollowers: 1500, ttViews: 3000, igLikes: 70, dm: 2, posts: 28 },
-    '2026-08': { igFollowers: 850, ttFollowers: 2000, ttViews: 4000, igLikes: 85, dm: 2, posts: 28 },
-    '2026-09': { igFollowers: 1000, ttFollowers: 3000, ttViews: 5000, igLikes: 100, dm: 3, posts: 28 },
+    '2026-03': { igFollowers: 100, ttFollowers: 200, ttViews: 500, igReelViews: 300,  igLikes: 15,  dm: 0,  posts: 28 },
+    '2026-04': { igFollowers: 100, ttFollowers: 200, ttViews: 500, igReelViews: 300,  igLikes: 15,  dm: 0,  posts: 28 },
+    '2026-05': { igFollowers: 300, ttFollowers: 500, ttViews: 1000, igReelViews: 800,  igLikes: 30, dm: 1,  posts: 28 },
+    '2026-06': { igFollowers: 500, ttFollowers: 1000, ttViews: 2000, igReelViews: 1500, igLikes: 50, dm: 1, posts: 28 },
+    '2026-07': { igFollowers: 700, ttFollowers: 1500, ttViews: 3000, igReelViews: 2500, igLikes: 70, dm: 2, posts: 28 },
+    '2026-08': { igFollowers: 850, ttFollowers: 2000, ttViews: 4000, igReelViews: 3500, igLikes: 85, dm: 2, posts: 28 },
+    '2026-09': { igFollowers: 1000, ttFollowers: 3000, ttViews: 5000, igReelViews: 5000, igLikes: 100, dm: 3, posts: 28 },
   };
 
   const CATEGORIES = ['MACHINE','WORK','PEOPLE','LOCAL','TIPS','B/A','DAILY'];
@@ -454,12 +463,13 @@
   };
 
   const KPI_FIELDS = [
-    { id: 'ig-followers', key: 'igFollowers' },
-    { id: 'tt-followers', key: 'ttFollowers' },
-    { id: 'tt-views',     key: 'ttViews' },
-    { id: 'ig-likes',     key: 'igLikes' },
-    { id: 'dm',           key: 'dm' },
-    { id: 'posts',        key: 'posts' },
+    { id: 'ig-followers',  key: 'igFollowers' },
+    { id: 'tt-followers',  key: 'ttFollowers' },
+    { id: 'tt-views',      key: 'ttViews' },
+    { id: 'ig-reel-views', key: 'igReelViews' },
+    { id: 'ig-likes',      key: 'igLikes' },
+    { id: 'dm',            key: 'dm' },
+    { id: 'posts',         key: 'posts' },
   ];
 
   let postRows = [];
@@ -485,6 +495,7 @@
     document.getElementById('target-ig-followers').textContent = t.igFollowers || '-';
     document.getElementById('target-tt-followers').textContent = t.ttFollowers || '-';
     document.getElementById('target-tt-views').textContent = t.ttViews || '-';
+    document.getElementById('target-ig-reel-views').textContent = t.igReelViews || '-';
     document.getElementById('target-ig-likes').textContent = t.igLikes || '-';
     document.getElementById('target-dm').textContent = t.dm > 0 ? t.dm : '-';
   }
